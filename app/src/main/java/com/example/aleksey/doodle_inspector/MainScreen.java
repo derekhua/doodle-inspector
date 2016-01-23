@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class MainScreen extends AppCompatActivity {
@@ -14,6 +16,12 @@ public class MainScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
 
+        final Button button = (Button) findViewById(R.id.start_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Move to canvas/gameplay screen
+            }
+        });
     }
 
 

@@ -1,11 +1,54 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainScreen">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context="com.example.aleksey.doodle_inspector.GameStart"
+    android:weightSum="1">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Doodle-Inspector!"
+        android:textSize="32sp"
+        android:layout_weight="0.5"
+        android:id="@+id/title"
+        android:layout_above="@+id/start_button"
+        android:layout_centerHorizontal="true" />
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/start_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/game_start_button"
+        android:textSize="32sp"
+        android:layout_above="@+id/leaderboard_header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="27dp" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/logo" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leaderboards"
+        android:textSize="16sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/leaderboard_header" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="272dp"
+        android:id="@+id/leaderboard"
+        android:layout_weight="0.59"
+
+        android:layout_below="@+id/leaderboard_header"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
