@@ -1,6 +1,7 @@
 package com.example.aleksey.doodle_inspector;
 
 import android.graphics.Bitmap;
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,8 @@ import java.io.OutputStream;
 import java.net.*;
 import com.github.nkzawa.emitter.Emitter;
 import android.util.Log;
+import android.widget.TextView;
+import org.json.JSONObject;
 
 public class DrawActivity extends ActionBarActivity {
 
@@ -31,12 +34,22 @@ public class DrawActivity extends ActionBarActivity {
     Emitter.Listener helloEmitter;
     Emitter.Listener disconnectEmitter;
     Emitter.Listener imageEmitter;
+    Emitter.Listener soloMatchEmitter;
 
     private DrawView drawView;
     private ImageButton currPaint;
     int numberOfImages = 0;
+    private CountDownTimer timer;
+    private TextView timerTextField;
+    private TextView wordTextField;
+    private String word = "";
+    public DrawActivity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
         connectEmitter = new Emitter.Listener() {
@@ -68,11 +81,30 @@ public class DrawActivity extends ActionBarActivity {
                 }
             }
         };
+        soloMatchEmitter = new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                final JSONObject json = ((JSONObject) args[0]);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            word = json.getString("word");
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        wordTextField.setText(word);
+                    }
+                });
+            }
+        };
 
         mSocket.on(Socket.EVENT_CONNECT, connectEmitter)
         .on("foundMatch", helloEmitter)
         .on(Socket.EVENT_DISCONNECT, disconnectEmitter)
-        .on("imageProb", imageEmitter);
+        .on("imageProb", imageEmitter)
+        .on("soloMatch", soloMatchEmitter);
 
         mSocket.connect();  // initiate connection to socket server
 
@@ -82,6 +114,20 @@ public class DrawActivity extends ActionBarActivity {
         String color = currPaint.getTag().toString();
         drawView.setColor(color);
         currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
+        timerTextField = (TextView) findViewById(R.id.Timer);
+        wordTextField = (TextView) findViewById(R.id.drawWord);
+        mSocket.emit("soloMatch");
+
+        timer = new CountDownTimer(20000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                timerTextField.setText("" + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                timerTextField.setText("done!");
+            }
+        }.start();
     }
 
     public void paintClicked(View view){
@@ -108,7 +154,8 @@ public class DrawActivity extends ActionBarActivity {
         drawView.reset();
         numberOfImages++;
         Log.d("DrawActivity: ", "SOCKETLOG: sending image");
-        mSocket.emit("imageProb", DrawView.getBase64Image());
+        String[] imageArray = new String[2];
+        mSocket.emit("imageProb", DrawView.getBase64Image(), word);
         if (numberOfImages == 5) {
             //go to finish page
         }
@@ -121,6 +168,7 @@ public class DrawActivity extends ActionBarActivity {
         mSocket.off(Socket.EVENT_DISCONNECT, disconnectEmitter);
         mSocket.off("hello", helloEmitter);
         mSocket.off("imageProb", imageEmitter);
+        mSocket.off("soloMatch", soloMatchEmitter);
         Log.d("DrawActivity: ", "SOCKETLOG: Socket off");
 
     }

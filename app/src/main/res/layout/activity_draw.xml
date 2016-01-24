@@ -9,16 +9,28 @@
     tools:context=".DrawActivity" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal" >
-        <!-- add buttons and stuff -->
-    </LinearLayout>
-    <!--
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >-->
+        android:layout_height="50dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/drawWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:text="Draw the word: "
+            />
+        <TextView
+            android:id="@+id/Timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:text=""
+            />
+    </LinearLayout>
+
         <com.example.aleksey.doodle_inspector.DrawView
             android:id="@+id/drawing"
             android:layout_width="fill_parent"
@@ -28,9 +40,8 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="3dp"
             android:layout_weight="1"
-            android:background="#FFFFFFFF"
-           <!-- android:layout_alignTop-->/>
-    <!--</RelativeLayout>-->
+            android:background="#FFFFFFFF"/>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
