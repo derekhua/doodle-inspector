@@ -129,7 +129,6 @@ public class DrawActivity extends Activity {
         currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
         timerTextField = (TextView) findViewById(R.id.Timer);
         wordTextField = (TextView) findViewById(R.id.drawWord);
-        mSocket.emit("soloMatch");
 
         timer = new CountDownTimer(15000, 1000) {
 
@@ -140,7 +139,7 @@ public class DrawActivity extends Activity {
             public void onFinish() {
                 submit(null);
             }
-        }.start();
+        };
 
 
     }
@@ -163,15 +162,13 @@ public class DrawActivity extends Activity {
 
     public void submit(View view) {
         //send request
-
-
         drawView.getScoreOfPicture();
         drawView.reset();
         numberOfImages++;
         Log.d("DrawActivity: ", "SOCKETLOG: sending image");
         String[] imageArray = new String[2];
         mSocket.emit("imageProb", DrawView.getBase64Image(), word);
-
+        timer.cancel();
         if (numberOfImages == 5) {
             //go to finish page
             Intent i = new Intent(this, ResultsScreen.class);
@@ -179,7 +176,8 @@ public class DrawActivity extends Activity {
             System.out.println("pushed score is "+(score*100)/5);
             i.putExtra("score", (int)(score*100)/5);
             startActivity(i);
-
+        } else {
+            mSocket.emit("soloMatch");
         }
     }
     @Override
