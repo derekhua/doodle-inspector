@@ -23,7 +23,7 @@
         android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="   Start Doodling!   "
+        android:text="   Solo Doodle   "
         android:textSize="25sp"
         android:layout_marginBottom="198dp"
         android:background="@drawable/paint_button"
@@ -38,6 +38,18 @@
         android:layout_above="@+id/title"
         android:layout_centerHorizontal="true" />
 
-        android:layout_alignParentStart="true" />
+    <Button
+        android:id="@+id/start1v1button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1v1 Doodle"
+        android:textSize="25sp"
+        android:background="@drawable/paint_button"
+        android:layout_marginTop="56dp"
+        android:layout_alignTop="@+id/start_button"
+        android:layout_centerHorizontal="true" /><![CDATA[
 
+    android:layout_alignParentStart="true" />
+
+]]>
 </RelativeLayout>
