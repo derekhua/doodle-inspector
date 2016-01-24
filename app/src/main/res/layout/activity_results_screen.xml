@@ -23,19 +23,18 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/score1TextView"
         android:layout_gravity="center_horizontal"
-        android:text="1"
         android:textSize="40sp"
         android:layout_alignTop="@+id/score2TextView"
         android:layout_toLeftOf="@+id/ratingBar"
         android:layout_toStartOf="@+id/ratingBar" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/score2TextView"
+        android:id="@+id/scoreTextView"
         android:layout_gravity="center_horizontal"
-        android:text="prime"
-        android:layout_alignleft="@+id/scoreTextView"
+        android:gravity="center"
         android:textSize="40sp"
         android:layout_below="@+id/resultTextView"
         android:layout_centerHorizontal="true" />
@@ -43,9 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/scoreTextView"
+        android:id="@+id/score2TextView"
         android:layout_gravity="center_horizontal"
-        android:text="2"
         android:textSize="40sp"
         android:layout_below="@+id/resultTextView"
         android:layout_toRightOf="@+id/doodleAgainButton"
@@ -75,14 +73,4 @@
         android:layout_alignLeft="@+id/ratingBar"
         android:layout_alignStart="@+id/ratingBar"
         android:onClick="startAgain"/>
-
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Switch"
-        android:id="@+id/switch1"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
 </RelativeLayout>

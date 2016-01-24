@@ -175,6 +175,8 @@ public class DrawActivity extends Activity {
             System.out.println("score is before final"+score);
             System.out.println("pushed score is "+(score*100)/5);
             i.putExtra("score", (int)(score*100)/5);
+            i.putExtra("score1", 0);
+            i.putExtra("score2", 0);
             startActivity(i);
         } else {
             mSocket.emit("soloMatch");

@@ -22,9 +22,18 @@ public class ResultsScreen extends Activity {
         TextView myTextView = (TextView)findViewById(R.id.resultTextView);
 
         TextView scoreText = (TextView)findViewById(R.id.scoreTextView);
+        TextView scoreText1 = (TextView)findViewById(R.id.score1TextView);
+        TextView scoreText2 = (TextView)findViewById(R.id.score2TextView);
         int score = getIntent().getExtras().getInt("score");
-        scoreText.setText(score+"");
+        int score1 = getIntent().getExtras().getInt("score1");
+        int score2 = getIntent().getExtras().getInt("score2");
 
+        if (score < 0) {
+            scoreText1.setText(score1 + "");
+            scoreText2.setText(score2 + "");
+        }
+        else
+            scoreText.setText(score+"");
 
         Button txt = (Button) findViewById(R.id.doodleAgainButton);
         txt.setTypeface(slab_typeface);

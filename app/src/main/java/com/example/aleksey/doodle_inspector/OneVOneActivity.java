@@ -47,8 +47,8 @@ public class OneVOneActivity extends Activity {
     private String word = "";
 
     private String wonResult;
-    private double yourResult;
-    private double theirResult;
+    private double yourResult = 0;
+    private double theirResult = 0;
 
     public OneVOneActivity() {
     }
@@ -84,9 +84,6 @@ public class OneVOneActivity extends Activity {
             @Override
             public void call(Object... args) {
                 final JSONObject json = ((JSONObject) args[0]);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
                         try {
                             word = json.getString("word");
                             wonResult = json.getString("won");
@@ -98,8 +95,6 @@ public class OneVOneActivity extends Activity {
                             e.printStackTrace();
                         }
                     }
-                });
-            }
         };
         findMatchEmitter = new Emitter.Listener() {
             @Override
@@ -181,7 +176,7 @@ public class OneVOneActivity extends Activity {
         if (numberOfImages == 5) {
             //go to finish page
             Intent i = new Intent(this, ResultsScreen.class);
-
+            i.putExtra("score", -1);
             i.putExtra("score1", (int)(yourResult*100)/5);
             i.putExtra("score2", (int)(theirResult*100)/5);
 
