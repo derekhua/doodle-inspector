@@ -1,11 +1,13 @@
 package com.example.aleksey.doodle_inspector;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -18,6 +20,12 @@ public class ResultsScreen extends Activity {
 
         Typeface slab_typeface = Typeface.createFromAsset(getAssets(), "fonts/SlabThing.ttf");
         TextView myTextView = (TextView)findViewById(R.id.resultTextView);
+
+        TextView scoreText = (TextView)findViewById(R.id.scoreTextView);
+        int score = getIntent().getExtras().getInt("score");
+        scoreText.setText(score+"");
+
+
         Button txt = (Button) findViewById(R.id.doodleAgainButton);
         txt.setTypeface(slab_typeface);
         myTextView.setTypeface(slab_typeface);
@@ -46,5 +54,13 @@ public class ResultsScreen extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void startAgain(View v){
+        //go to finish page
+        //finish();
+        Intent i = new Intent(this, MainScreen.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
     }
 }

@@ -46,6 +46,7 @@ public class DrawActivity extends Activity {
     private TextView timerTextField;
     private TextView wordTextField;
     private String word = "";
+    private double score = 0;
     public DrawActivity() {
     }
 
@@ -65,31 +66,32 @@ public class DrawActivity extends Activity {
             @Override
             public void call(Object... args) {
                 Log.d("DrawActivity: ", "SOCKETLOG: socket connected");
-                mSocket.emit("findMatch", "testing");
+                mSocket.emit("soloMatch");
             }
         };
-        helloEmitter = new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                for (int i = 0; i < args.length; i++) {
-                    Log.d("DrawActivity: ", "SOCKETLOG: " + args[i]);
-                }
-            }
-        };
+
         disconnectEmitter = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d("DrawActivity: ", "SOCKETLOG: socket disconnected");
             }
         };
+
         imageEmitter = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                for (int i = 0; i < args.length; i++) {
-                    Log.d("DrawActivity: ", "SOCKETLOG: " + args[i]);
+                final JSONObject json = ((JSONObject) args[0]);
+                try {
+                    score+= json.getDouble("result");
+                    System.out.println("score now is "+score);
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
+
+
             }
         };
+
         soloMatchEmitter = new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
@@ -99,18 +101,20 @@ public class DrawActivity extends Activity {
                     public void run() {
                         try {
                             word = json.getString("word");
+
                         }
                         catch (Exception e) {
                             e.printStackTrace();
                         }
                         wordTextField.setText(word);
+                        timer.cancel();
+                        timer.start();
                     }
                 });
             }
         };
 
         mSocket.on(Socket.EVENT_CONNECT, connectEmitter)
-        .on("foundMatch", helloEmitter)
         .on(Socket.EVENT_DISCONNECT, disconnectEmitter)
         .on("imageProb", imageEmitter)
         .on("soloMatch", soloMatchEmitter);
@@ -125,9 +129,8 @@ public class DrawActivity extends Activity {
         currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
         timerTextField = (TextView) findViewById(R.id.Timer);
         wordTextField = (TextView) findViewById(R.id.drawWord);
-        mSocket.emit("soloMatch");
 
-        timer = new CountDownTimer(20000, 1000) {
+        timer = new CountDownTimer(15000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 timerTextField.setText("" + millisUntilFinished / 1000);
@@ -135,9 +138,8 @@ public class DrawActivity extends Activity {
 
             public void onFinish() {
                 submit(null);
-                timerTextField.setText("done!");
             }
-        }.start();
+        };
 
 
     }
@@ -160,22 +162,22 @@ public class DrawActivity extends Activity {
 
     public void submit(View view) {
         //send request
-
-
         drawView.getScoreOfPicture();
         drawView.reset();
         numberOfImages++;
         Log.d("DrawActivity: ", "SOCKETLOG: sending image");
         String[] imageArray = new String[2];
         mSocket.emit("imageProb", DrawView.getBase64Image(), word);
-        mSocket.emit("soloMatch");
         timer.cancel();
-        timer.start();
         if (numberOfImages == 5) {
             //go to finish page
             Intent i = new Intent(this, ResultsScreen.class);
+            System.out.println("score is before final"+score);
+            System.out.println("pushed score is "+(score*100)/5);
+            i.putExtra("score", (int)(score*100)/5);
             startActivity(i);
-
+        } else {
+            mSocket.emit("soloMatch");
         }
     }
     @Override
@@ -184,7 +186,6 @@ public class DrawActivity extends Activity {
         mSocket.disconnect();
         mSocket.off(Socket.EVENT_CONNECT, connectEmitter);
         mSocket.off(Socket.EVENT_DISCONNECT, disconnectEmitter);
-        mSocket.off("hello", helloEmitter);
         mSocket.off("imageProb", imageEmitter);
         mSocket.off("soloMatch", soloMatchEmitter);
         Log.d("DrawActivity: ", "SOCKETLOG: Socket off");
