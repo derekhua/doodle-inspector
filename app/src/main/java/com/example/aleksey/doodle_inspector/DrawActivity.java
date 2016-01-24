@@ -1,7 +1,9 @@
 package com.example.aleksey.doodle_inspector;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -20,7 +22,7 @@ import android.util.Log;
 import android.widget.TextView;
 import org.json.JSONObject;
 
-public class DrawActivity extends ActionBarActivity {
+public class DrawActivity extends Activity {
 
     private Socket mSocket;
     {
@@ -53,6 +55,12 @@ public class DrawActivity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
+        Typeface dumb_typeface = Typeface.createFromAsset(getAssets(), "fonts/3Dumb.ttf");
+        TextView drawWord = (TextView) findViewById(R.id.drawWord);
+        TextView timerText = (TextView) findViewById(R.id.Timer);
+        drawWord.setTypeface(dumb_typeface);
+        timerText.setTypeface(dumb_typeface);
+
         connectEmitter = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
