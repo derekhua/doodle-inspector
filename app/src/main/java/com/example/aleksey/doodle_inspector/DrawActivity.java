@@ -46,6 +46,7 @@ public class DrawActivity extends Activity {
     private TextView timerTextField;
     private TextView wordTextField;
     private String word = "";
+    private double score = 0;
     public DrawActivity() {
     }
 
@@ -85,9 +86,15 @@ public class DrawActivity extends Activity {
         imageEmitter = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                for (int i = 0; i < args.length; i++) {
-                    Log.d("DrawActivity: ", "SOCKETLOG: " + args[i]);
+                final JSONObject json = ((JSONObject) args[0]);
+                try {
+                    score+= json.getDouble("result");
+                    System.out.println("score now is "+score);
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
+
+
             }
         };
         soloMatchEmitter = new Emitter.Listener() {
@@ -175,6 +182,9 @@ public class DrawActivity extends Activity {
         if (numberOfImages == 5) {
             //go to finish page
             Intent i = new Intent(this, ResultsScreen.class);
+            System.out.println("score is before final"+score);
+            System.out.println("pushed score is "+(score*100)/5);
+            i.putExtra("score", (int)(score*100)/5);
             startActivity(i);
 
         }

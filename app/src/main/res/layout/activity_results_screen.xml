@@ -17,6 +17,18 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/scoreTextView"
+        android:layout_gravity="center_horizontal"
+
+        android:layout_alignTop="@+id/resultTextView"
+        android:textSize="40sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
+
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
