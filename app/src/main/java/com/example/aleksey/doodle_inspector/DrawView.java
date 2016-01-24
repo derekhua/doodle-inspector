@@ -70,6 +70,7 @@ public class DrawView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         System.out.println("OnDraw is being called");
+        canvas.drawCircle(10, canvas.getWidth()-20, 20, new Paint(Color.BLACK));
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         //canvas.drawPath(drawPath, drawPaint);
     }
