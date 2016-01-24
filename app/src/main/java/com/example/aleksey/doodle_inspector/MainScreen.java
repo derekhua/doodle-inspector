@@ -52,7 +52,7 @@ public class MainScreen extends Activity {
             }
         });
         final Button button1v1 = (Button) findViewById(R.id.start1v1button);
-        button.setOnClickListener(new View.OnClickListener() {
+        button1v1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent myIntent = new Intent(v.getContext(), OneVOneActivity.class);
                 startActivityForResult(myIntent, 0);

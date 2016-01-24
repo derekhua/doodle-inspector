@@ -1,7 +1,9 @@
 package com.example.aleksey.doodle_inspector;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -20,7 +22,7 @@ import android.util.Log;
 import android.widget.TextView;
 import org.json.JSONObject;
 
-public class OneVOneActivity extends ActionBarActivity {
+public class OneVOneActivity extends Activity {
 
     private Socket mSocket;
     {
@@ -32,10 +34,9 @@ public class OneVOneActivity extends ActionBarActivity {
     }
 
     Emitter.Listener connectEmitter;
-    Emitter.Listener findEmitter;
     Emitter.Listener disconnectEmitter;
     Emitter.Listener imageEmitter;
-    Emitter.Listener OVOEmitter;
+    Emitter.Listener findMatchEmitter;
 
     private DrawView drawView;
     private ImageButton currPaint;
@@ -44,9 +45,9 @@ public class OneVOneActivity extends ActionBarActivity {
     private TextView timerTextField;
     private TextView wordTextField;
     private String word = "";
-    private String yourResult = "";
-    private String theirResult = "";
     private String win = "";
+    private String yourResults = "";
+    private String theirResults = "";
     public OneVOneActivity() {
     }
 
@@ -56,14 +57,46 @@ public class OneVOneActivity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
+        Typeface dumb_typeface = Typeface.createFromAsset(getAssets(), "fonts/3Dumb.ttf");
+        TextView drawWord = (TextView) findViewById(R.id.drawWord);
+        TextView timerText = (TextView) findViewById(R.id.Timer);
+        drawWord.setTypeface(dumb_typeface);
+        timerText.setTypeface(dumb_typeface);
+
         connectEmitter = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d("DrawActivity: ", "SOCKETLOG: socket connected");
-                mSocket.emit("findMatch");
+                mSocket.emit("findMatch", "testing");
             }
         };
-        findEmitter = new Emitter.Listener() {
+        disconnectEmitter = new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.d("DrawActivity: ", "SOCKETLOG: socket disconnected");
+            }
+        };
+        imageEmitter = new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                final JSONObject json = ((JSONObject) args[0]);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            yourResults = json.getString("yours");
+                            theirResults = json.getString("theirs");
+                            win = json.getString("win");
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        };
+        findMatchEmitter = new Emitter.Listener() {
+            @Override
             public void call(final Object... args) {
                 final JSONObject json = ((JSONObject) args[0]);
                 runOnUiThread(new Runnable() {
@@ -80,45 +113,11 @@ public class OneVOneActivity extends ActionBarActivity {
                 });
             }
         };
-        disconnectEmitter = new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                Log.d("DrawActivity: ", "SOCKETLOG: socket disconnected");
-            }
-        };
-        imageEmitter = new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                for (int i = 0; i < args.length; i++) {
-                    Log.d("DrawActivity: ", "SOCKETLOG: " + args[i]);
-                }
-            }
-        };
-        OVOEmitter = new Emitter.Listener() {
-            @Override
-            public void call(final Object... args) {
-                final JSONObject json = ((JSONObject) args[0]);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            win = json.getString("win");
-                            yourResult = json.getString("yours");
-                            theirResult = json.getString("theirs");
-                        }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        };
 
         mSocket.on(Socket.EVENT_CONNECT, connectEmitter)
-                .on("findMatch", findEmitter)
                 .on(Socket.EVENT_DISCONNECT, disconnectEmitter)
                 .on("image1v1", imageEmitter)
-                .on("image1v1", OVOEmitter);
+                .on("findMatch", findMatchEmitter);
 
         mSocket.connect();  // initiate connection to socket server
 
@@ -130,7 +129,6 @@ public class OneVOneActivity extends ActionBarActivity {
         currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
         timerTextField = (TextView) findViewById(R.id.Timer);
         wordTextField = (TextView) findViewById(R.id.drawWord);
-        mSocket.emit("findMatch");
 
         timer = new CountDownTimer(20000, 1000) {
 
@@ -173,7 +171,7 @@ public class OneVOneActivity extends ActionBarActivity {
         Log.d("DrawActivity: ", "SOCKETLOG: sending image");
         String[] imageArray = new String[2];
         mSocket.emit("image1v1", DrawView.getBase64Image(), word);
-        mSocket.emit("image1v1");
+        mSocket.emit("findMatch");
         timer.cancel();
         timer.start();
         if (numberOfImages == 5) {
@@ -189,9 +187,8 @@ public class OneVOneActivity extends ActionBarActivity {
         mSocket.disconnect();
         mSocket.off(Socket.EVENT_CONNECT, connectEmitter);
         mSocket.off(Socket.EVENT_DISCONNECT, disconnectEmitter);
-        mSocket.off("findMatch", findEmitter);
         mSocket.off("image1v1", imageEmitter);
-        mSocket.off("image1v1", OVOEmitter);
+        mSocket.off("findMatch", findMatchEmitter);
         Log.d("DrawActivity: ", "SOCKETLOG: Socket off");
 
     }

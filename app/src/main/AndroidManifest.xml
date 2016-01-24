@@ -22,6 +22,7 @@
         <activity android:name=".MainScreen"/>
         <activity android:name=".ResultsScreen"/>
         <activity android:name=".DrawActivity"/>
+        <activity android:name=".OneVOneActivity"/>
     </application>
 
 </manifest>
