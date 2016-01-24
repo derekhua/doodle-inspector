@@ -3,6 +3,7 @@ package com.example.aleksey.doodle_inspector;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.view.View;
 
 import android.graphics.Bitmap;
@@ -10,6 +11,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.view.MotionEvent;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 /**
  * TODO: document your custom view class.
@@ -103,13 +109,50 @@ public class DrawView extends View {
     }
 
     public void reset(){
-        int w = canvasBitmap.getWidth();
+
+        drawCanvas.drawColor(Color.WHITE);
+       /* int w = canvasBitmap.getWidth();
         int h = canvasBitmap.getHeight();
+
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        drawCanvas = new Canvas(canvasBitmap);
+        drawCanvas = new Canvas(canvasBitmap);*/
         invalidate();
+    }
+
+    public double getScoreOfPicture(){
+        Bitmap map  = getResizedBitmap(canvasBitmap , 700);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        map.compress(Bitmap.CompressFormat.PNG, 70, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+
+
+        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+
+        
+
+
+        return 0;
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 0) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
 
 
 }
+
+
+

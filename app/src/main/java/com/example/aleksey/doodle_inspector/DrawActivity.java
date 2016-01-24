@@ -1,5 +1,6 @@
 package com.example.aleksey.doodle_inspector;
 
+import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.net.*;
 import com.github.nkzawa.emitter.Emitter;
 import android.util.Log;
@@ -85,6 +90,9 @@ public class DrawActivity extends ActionBarActivity {
 
     public void submit(View view) {
         //send request
+
+
+        drawView.getScoreOfPicture();
         drawView.reset();
         numberOfImages++;
 
