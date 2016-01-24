@@ -48,6 +48,7 @@ public class DrawView extends View {
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
 
         canvasPaint = new Paint(Paint.DITHER_FLAG);
+        //canvasPaint.setColor(paintColor);
     }
 
     @Override
@@ -57,19 +58,13 @@ public class DrawView extends View {
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
     }
-    private void init(AttributeSet attrs, int defStyle) {
-
-    }
-
-    private void invalidateTextPaintAndMeasurements() {
-
-    }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        System.out.println("OnDraw is being called");
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
-        canvas.drawPath(drawPath, drawPaint);
+        //canvas.drawPath(drawPath, drawPaint);
     }
 
     @Override
@@ -77,7 +72,7 @@ public class DrawView extends View {
     //detect user touch
         float touchX = event.getX();
         float touchY = event.getY();
-
+        System.out.println("Inside onTouchEvent and color is "+drawPaint.getColor()+"and x and y is "+touchX+" "+touchY);
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -85,6 +80,7 @@ public class DrawView extends View {
                 break;
             case MotionEvent.ACTION_MOVE:
                 drawPath.lineTo(touchX, touchY);
+                drawCanvas.drawPath(drawPath, drawPaint);
                 break;
             case MotionEvent.ACTION_UP:
                 drawCanvas.drawPath(drawPath, drawPaint);
@@ -104,6 +100,14 @@ public class DrawView extends View {
         paintColor = Color.parseColor(newColor);
         drawPaint.setColor(paintColor);
 
+    }
+
+    public void reset(){
+        int w = canvasBitmap.getWidth();
+        int h = canvasBitmap.getHeight();
+        canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        drawCanvas = new Canvas(canvasBitmap);
+        invalidate();
     }
 
 

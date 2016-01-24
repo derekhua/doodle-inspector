@@ -11,6 +11,7 @@ public class DrawActivity extends ActionBarActivity {
 
     private DrawView drawView;
     private ImageButton currPaint;
+    int numberOfImages = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +19,8 @@ public class DrawActivity extends ActionBarActivity {
         drawView = (DrawView)findViewById(R.id.drawing);
         LinearLayout paintLayout = (LinearLayout)findViewById(R.id.paint_colors);
         currPaint = (ImageButton)paintLayout.getChildAt(0);
+        String color = currPaint.getTag().toString();
+        drawView.setColor(color);
         currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
     }
 
@@ -37,6 +40,12 @@ public class DrawActivity extends ActionBarActivity {
     }
 
     public void submit(View view){
+        //send request
+        drawView.reset();
+        numberOfImages++;
 
+        if(numberOfImages ==5){
+            //go to finish page
+        }
     }
 }
