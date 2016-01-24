@@ -65,23 +65,17 @@ public class DrawActivity extends Activity {
             @Override
             public void call(Object... args) {
                 Log.d("DrawActivity: ", "SOCKETLOG: socket connected");
-                mSocket.emit("findMatch", "testing");
+                mSocket.emit("soloMatch");
             }
         };
-        helloEmitter = new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                for (int i = 0; i < args.length; i++) {
-                    Log.d("DrawActivity: ", "SOCKETLOG: " + args[i]);
-                }
-            }
-        };
+
         disconnectEmitter = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d("DrawActivity: ", "SOCKETLOG: socket disconnected");
             }
         };
+
         imageEmitter = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -90,6 +84,7 @@ public class DrawActivity extends Activity {
                 }
             }
         };
+
         soloMatchEmitter = new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
@@ -113,7 +108,6 @@ public class DrawActivity extends Activity {
         };
 
         mSocket.on(Socket.EVENT_CONNECT, connectEmitter)
-        .on("foundMatch", helloEmitter)
         .on(Socket.EVENT_DISCONNECT, disconnectEmitter)
         .on("imageProb", imageEmitter)
         .on("soloMatch", soloMatchEmitter);
@@ -170,7 +164,6 @@ public class DrawActivity extends Activity {
         Log.d("DrawActivity: ", "SOCKETLOG: sending image");
         String[] imageArray = new String[2];
         mSocket.emit("imageProb", DrawView.getBase64Image(), word);
-        mSocket.emit("soloMatch");
 
         if (numberOfImages == 5) {
             //go to finish page
@@ -185,7 +178,6 @@ public class DrawActivity extends Activity {
         mSocket.disconnect();
         mSocket.off(Socket.EVENT_CONNECT, connectEmitter);
         mSocket.off(Socket.EVENT_DISCONNECT, disconnectEmitter);
-        mSocket.off("hello", helloEmitter);
         mSocket.off("imageProb", imageEmitter);
         mSocket.off("soloMatch", soloMatchEmitter);
         Log.d("DrawActivity: ", "SOCKETLOG: Socket off");
