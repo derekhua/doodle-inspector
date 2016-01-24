@@ -1,17 +1,28 @@
 package com.example.aleksey.doodle_inspector;
 
-import android.support.v7.app.ActionBarActivity;
+import android.os.Handler;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.content.Intent;
 
-
-public class MainScreen extends ActionBarActivity {
+public class MainScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+
+        final Button button = (Button) findViewById(R.id.start_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent myIntent = new Intent(v.getContext(), DrawActivity.class);
+                startActivityForResult(myIntent, 0);
+            }
+        });
     }
 
 
