@@ -30,6 +30,7 @@ public class DrawActivity extends ActionBarActivity {
     Emitter.Listener connectEmitter;
     Emitter.Listener helloEmitter;
     Emitter.Listener disconnectEmitter;
+    Emitter.Listener imageEmitter;
 
     private DrawView drawView;
     private ImageButton currPaint;
@@ -42,7 +43,7 @@ public class DrawActivity extends ActionBarActivity {
             @Override
             public void call(Object... args) {
                 Log.d("DrawActivity: ", "SOCKETLOG: socket connected");
-                mSocket.emit("message", "testing");
+                mSocket.emit("findMatch", "testing");
             }
         };
         helloEmitter = new Emitter.Listener() {
@@ -59,8 +60,17 @@ public class DrawActivity extends ActionBarActivity {
                 Log.d("DrawActivity: ", "SOCKETLOG: socket disconnected");
             }
         };
+        imageEmitter = new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                //mSocket.emit("imageProb", DrawView.getBase64Image());
+            }
+        };
+
         mSocket.on(Socket.EVENT_CONNECT, connectEmitter)
-        .on("hello", helloEmitter).on(Socket.EVENT_DISCONNECT, disconnectEmitter);
+        .on("foundMatch", helloEmitter)
+        .on(Socket.EVENT_DISCONNECT, disconnectEmitter)
+        .on("imageProb", imageEmitter);
 
         mSocket.connect();  // initiate connection to socket server
 
@@ -95,7 +105,7 @@ public class DrawActivity extends ActionBarActivity {
         drawView.getScoreOfPicture();
         drawView.reset();
         numberOfImages++;
-
+        mSocket.emit("imageProb", DrawView.getBase64Image());
         if (numberOfImages == 5) {
             //go to finish page
         }

@@ -119,6 +119,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/submit"
-        android:onClick="submit"
-        />
+        android:onClick="submit" />
 </LinearLayout>

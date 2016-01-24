@@ -32,7 +32,8 @@ public class DrawView extends View {
     private Canvas drawCanvas;
     //canvas bitmap
     private Bitmap canvasBitmap;
-
+    //base64 image String
+    private static String base64Image;
 
 
 
@@ -126,7 +127,7 @@ public class DrawView extends View {
         byte[] byteArray = byteArrayOutputStream .toByteArray();
 
 
-        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        this.setBase64Image(Base64.encodeToString(byteArray, Base64.DEFAULT));
 
 
         
@@ -150,8 +151,13 @@ public class DrawView extends View {
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
+    public static String getBase64Image() {
+        return base64Image;
+    }
 
-
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+    }
 }
 
 
