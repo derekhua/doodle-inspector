@@ -99,11 +99,14 @@ public class DrawActivity extends Activity {
                     public void run() {
                         try {
                             word = json.getString("word");
+
                         }
                         catch (Exception e) {
                             e.printStackTrace();
                         }
                         wordTextField.setText(word);
+                        timer.cancel();
+                        timer.start();
                     }
                 });
             }
@@ -127,7 +130,7 @@ public class DrawActivity extends Activity {
         wordTextField = (TextView) findViewById(R.id.drawWord);
         mSocket.emit("soloMatch");
 
-        timer = new CountDownTimer(20000, 1000) {
+        timer = new CountDownTimer(15000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 timerTextField.setText("" + millisUntilFinished / 1000);
@@ -135,7 +138,6 @@ public class DrawActivity extends Activity {
 
             public void onFinish() {
                 submit(null);
-                timerTextField.setText("done!");
             }
         }.start();
 
@@ -169,8 +171,7 @@ public class DrawActivity extends Activity {
         String[] imageArray = new String[2];
         mSocket.emit("imageProb", DrawView.getBase64Image(), word);
         mSocket.emit("soloMatch");
-        timer.cancel();
-        timer.start();
+
         if (numberOfImages == 5) {
             //go to finish page
             Intent i = new Intent(this, ResultsScreen.class);

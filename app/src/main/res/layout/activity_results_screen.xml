@@ -39,6 +39,7 @@
         android:textSize="25sp"
         android:layout_below="@+id/ratingBar"
         android:layout_alignLeft="@+id/ratingBar"
-        android:layout_alignStart="@+id/ratingBar" />
+        android:layout_alignStart="@+id/ratingBar"
+        android:onClick="startAgain"/>
 
 </RelativeLayout>

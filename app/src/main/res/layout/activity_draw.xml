@@ -11,8 +11,10 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+
         android:gravity="center_vertical|center_horizontal"
         android:orientation="horizontal" >
         <TextView
@@ -20,7 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:textSize="16sp"
+            android:textSize="24sp"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="Draw the word: "
             />
@@ -28,7 +31,8 @@
             android:id="@+id/Timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="24sp"
+            android:layout_marginRight="10dp"
             android:gravity="right"
             android:layout_weight="1"
             android:text=""
