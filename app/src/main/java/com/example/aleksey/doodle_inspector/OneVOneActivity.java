@@ -47,9 +47,8 @@ public class OneVOneActivity extends Activity {
     private String word = "";
 
     private String wonResult;
-    private String yourResult;
-    private String theirResult;
-
+    private double yourResult;
+    private double theirResult;
 
     public OneVOneActivity() {
     }
@@ -91,11 +90,9 @@ public class OneVOneActivity extends Activity {
                         try {
                             word = json.getString("word");
                             wonResult = json.getString("won");
-                            yourResult = json.getString("yours");
-                            theirResult = json.getString("theirs");
+                            yourResult += json.getDouble("yours");
+                            theirResult += json.getDouble("theirs");
                             Log.d("wonResult: ", wonResult);
-                            Log.d("yourResult: ", yourResult);
-                            Log.d("theirResult: ", theirResult);
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -180,13 +177,17 @@ public class OneVOneActivity extends Activity {
         Log.d("OneVOneActivity: ", "SOCKETLOG: sending image");
         String[] imageArray = new String[2];
         mSocket.emit("image1v1", DrawView.getBase64Image(), word);
-        mSocket.emit("findMatch");
-
+        timer.cancel();
         if (numberOfImages == 5) {
             //go to finish page
             Intent i = new Intent(this, ResultsScreen.class);
-            startActivity(i);
 
+            i.putExtra("score1", (int)(yourResult*100)/5);
+            i.putExtra("score2", (int)(theirResult*100)/5);
+
+            startActivity(i);
+        } else {
+            mSocket.emit("findMatch");
         }
     }
     @Override
