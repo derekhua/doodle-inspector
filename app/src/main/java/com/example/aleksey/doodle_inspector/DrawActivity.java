@@ -63,7 +63,9 @@ public class DrawActivity extends ActionBarActivity {
         imageEmitter = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                //mSocket.emit("imageProb", DrawView.getBase64Image());
+                for (int i = 0; i < args.length; i++) {
+                    Log.d("DrawActivity: ", "SOCKETLOG: " + args[i]);
+                }
             }
         };
 
@@ -105,6 +107,7 @@ public class DrawActivity extends ActionBarActivity {
         drawView.getScoreOfPicture();
         drawView.reset();
         numberOfImages++;
+        Log.d("DrawActivity: ", "SOCKETLOG: sending image");
         mSocket.emit("imageProb", DrawView.getBase64Image());
         if (numberOfImages == 5) {
             //go to finish page
@@ -117,6 +120,7 @@ public class DrawActivity extends ActionBarActivity {
         mSocket.off(Socket.EVENT_CONNECT, connectEmitter);
         mSocket.off(Socket.EVENT_DISCONNECT, disconnectEmitter);
         mSocket.off("hello", helloEmitter);
+        mSocket.off("imageProb", imageEmitter);
         Log.d("DrawActivity: ", "SOCKETLOG: Socket off");
 
     }
