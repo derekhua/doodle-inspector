@@ -1,6 +1,7 @@
 package com.example.aleksey.doodle_inspector;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -20,7 +21,7 @@ public class DrawView extends View {
     //drawing and canvas paint
     private Paint drawPaint, canvasPaint;
     //initial color
-    private int paintColor = 0xFF660000;
+    private int paintColor = 0xFF0000;
     //canvas
     private Canvas drawCanvas;
     //canvas bitmap
@@ -95,6 +96,14 @@ public class DrawView extends View {
 
         invalidate();
         return true;
+    }
+
+    public void setColor(String newColor){
+        //set color
+        invalidate();
+        paintColor = Color.parseColor(newColor);
+        drawPaint.setColor(paintColor);
+
     }
 
 
