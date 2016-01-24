@@ -35,7 +35,7 @@ public class OneVOneActivity extends Activity {
 
     Emitter.Listener connectEmitter;
     Emitter.Listener disconnectEmitter;
-    Emitter.Listener imageEmitter;
+    Emitter.Listener image1v1Emitter;
     Emitter.Listener findMatchEmitter;
 
     private DrawView drawView;
@@ -45,9 +45,12 @@ public class OneVOneActivity extends Activity {
     private TextView timerTextField;
     private TextView wordTextField;
     private String word = "";
-    private String win = "";
-    private String yourResults = "";
-    private String theirResults = "";
+
+    private String wonResult;
+    private String yourResult;
+    private String theirResult;
+
+
     public OneVOneActivity() {
     }
 
@@ -66,27 +69,33 @@ public class OneVOneActivity extends Activity {
         connectEmitter = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.d("DrawActivity: ", "SOCKETLOG: socket connected");
-                mSocket.emit("findMatch", "testing");
+                Log.d("OneVOneActivity: ", "SOCKETLOG: socket connected");
+                mSocket.emit("findMatch");
             }
         };
+
         disconnectEmitter = new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Log.d("DrawActivity: ", "SOCKETLOG: socket disconnected");
+                Log.d("OneVOneActivity: ", "SOCKETLOG: socket disconnected");
             }
         };
-        imageEmitter = new Emitter.Listener() {
+
+        image1v1Emitter = new Emitter.Listener() {
             @Override
-            public void call(final Object... args) {
+            public void call(Object... args) {
                 final JSONObject json = ((JSONObject) args[0]);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            yourResults = json.getString("yours");
-                            theirResults = json.getString("theirs");
-                            win = json.getString("win");
+                            word = json.getString("word");
+                            wonResult = json.getString("won");
+                            yourResult = json.getString("yours");
+                            theirResult = json.getString("theirs");
+                            Log.d("wonResult: ", wonResult);
+                            Log.d("yourResult: ", yourResult);
+                            Log.d("theirResult: ", theirResult);
                         }
                         catch (Exception e) {
                             e.printStackTrace();
@@ -109,6 +118,8 @@ public class OneVOneActivity extends Activity {
                             e.printStackTrace();
                         }
                         wordTextField.setText(word);
+                        timer.cancel();
+                        timer.start();
                     }
                 });
             }
@@ -116,7 +127,7 @@ public class OneVOneActivity extends Activity {
 
         mSocket.on(Socket.EVENT_CONNECT, connectEmitter)
                 .on(Socket.EVENT_DISCONNECT, disconnectEmitter)
-                .on("image1v1", imageEmitter)
+                .on("image1v1", image1v1Emitter)
                 .on("findMatch", findMatchEmitter);
 
         mSocket.connect();  // initiate connection to socket server
@@ -130,7 +141,7 @@ public class OneVOneActivity extends Activity {
         timerTextField = (TextView) findViewById(R.id.Timer);
         wordTextField = (TextView) findViewById(R.id.drawWord);
 
-        timer = new CountDownTimer(20000, 1000) {
+        timer = new CountDownTimer(15000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 timerTextField.setText("" + millisUntilFinished / 1000);
@@ -138,9 +149,8 @@ public class OneVOneActivity extends Activity {
 
             public void onFinish() {
                 submit(null);
-                timerTextField.setText("done!");
             }
-        }.start();
+        };
 
 
     }
@@ -164,16 +174,14 @@ public class OneVOneActivity extends Activity {
     public void submit(View view) {
         //send request
 
-
         drawView.getScoreOfPicture();
         drawView.reset();
         numberOfImages++;
-        Log.d("DrawActivity: ", "SOCKETLOG: sending image");
+        Log.d("OneVOneActivity: ", "SOCKETLOG: sending image");
         String[] imageArray = new String[2];
         mSocket.emit("image1v1", DrawView.getBase64Image(), word);
         mSocket.emit("findMatch");
-        timer.cancel();
-        timer.start();
+
         if (numberOfImages == 5) {
             //go to finish page
             Intent i = new Intent(this, ResultsScreen.class);
@@ -187,9 +195,9 @@ public class OneVOneActivity extends Activity {
         mSocket.disconnect();
         mSocket.off(Socket.EVENT_CONNECT, connectEmitter);
         mSocket.off(Socket.EVENT_DISCONNECT, disconnectEmitter);
-        mSocket.off("image1v1", imageEmitter);
+        mSocket.off("image1v1", image1v1Emitter);
         mSocket.off("findMatch", findMatchEmitter);
-        Log.d("DrawActivity: ", "SOCKETLOG: Socket off");
+        Log.d("OneVOneActivity: ", "SOCKETLOG: Socket off");
 
     }
 }
