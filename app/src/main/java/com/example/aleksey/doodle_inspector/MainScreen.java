@@ -22,12 +22,15 @@ public class MainScreen extends Activity {
         setContentView(R.layout.activity_main_screen);
 
         Typeface dumb_typeface = Typeface.createFromAsset(getAssets(), "fonts/3Dumb.ttf");
-        TextView myTextView = (TextView)findViewById(R.id.title);
-        Button txt = (Button) findViewById(R.id.start_button);
-        txt.setTypeface(dumb_typeface);
-        myTextView.setTypeface(dumb_typeface);
+        TextView title = (TextView)findViewById(R.id.title);
+        TextView tag = (TextView)findViewById(R.id.tag);
+        Button singleMatch = (Button) findViewById(R.id.start_button);
+        Button doubleMatch = (Button) findViewById(R.id.start1v1button);
+        singleMatch.setTypeface(dumb_typeface);
+        doubleMatch.setTypeface(dumb_typeface);
+        title.setTypeface(dumb_typeface);
+        tag.setTypeface(dumb_typeface);
 
-        TextView title = (TextView) findViewById(R.id.title);
         ImageView image = (ImageView) findViewById(R.id.logo);
         Animation slideLogo = AnimationUtils.loadAnimation(this, R.anim.slide);
         Animation slideTitle = AnimationUtils.loadAnimation(this, R.anim.slide);

@@ -55,11 +55,11 @@ public class DrawActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
-        Typeface dumb_typeface = Typeface.createFromAsset(getAssets(), "fonts/3Dumb.ttf");
+        Typeface slab_typeface = Typeface.createFromAsset(getAssets(), "fonts/SlabThing.ttf");
         TextView drawWord = (TextView) findViewById(R.id.drawWord);
         TextView timerText = (TextView) findViewById(R.id.Timer);
-        drawWord.setTypeface(dumb_typeface);
-        timerText.setTypeface(dumb_typeface);
+        drawWord.setTypeface(slab_typeface);
+        timerText.setTypeface(slab_typeface);
 
         connectEmitter = new Emitter.Listener() {
             @Override
