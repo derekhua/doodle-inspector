@@ -1,6 +1,7 @@
 package com.example.aleksey.doodle_inspector;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.CountDownTimer;
@@ -133,9 +134,12 @@ public class DrawActivity extends Activity {
             }
 
             public void onFinish() {
+                submit(null);
                 timerTextField.setText("done!");
             }
         }.start();
+
+
     }
 
     public void paintClicked(View view){
@@ -164,8 +168,14 @@ public class DrawActivity extends Activity {
         Log.d("DrawActivity: ", "SOCKETLOG: sending image");
         String[] imageArray = new String[2];
         mSocket.emit("imageProb", DrawView.getBase64Image(), word);
+        mSocket.emit("soloMatch");
+        timer.cancel();
+        timer.start();
         if (numberOfImages == 5) {
             //go to finish page
+            Intent i = new Intent(this, ResultsScreen.class);
+            startActivity(i);
+
         }
     }
     @Override
