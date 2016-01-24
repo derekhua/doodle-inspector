@@ -35,4 +35,8 @@ public class DrawActivity extends ActionBarActivity {
         }
 
     }
+
+    public void submit(View view){
+
+    }
 }
