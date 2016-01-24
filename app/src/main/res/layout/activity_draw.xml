@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFCCCCCC"
+    android:background="@drawable/smaller_canvas"
     android:orientation="vertical"
-    tools:context=".DrawActivity" >
+    tools:context=".DrawActivity"
+    android:weightSum="1">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="50dp"
+        android:paddingTop="20dp"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="horizontal" >
         <TextView
@@ -18,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
+            android:textSize="16sp"
             android:layout_weight="1"
             android:text="Draw the word: "
             />
@@ -25,6 +28,7 @@
             android:id="@+id/Timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:gravity="right"
             android:layout_weight="1"
             android:text=""
@@ -33,14 +37,15 @@
 
         <com.example.aleksey.doodle_inspector.DrawView
             android:id="@+id/drawing"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_width="415dp"
+            android:layout_height="494dp"
             android:layout_marginBottom="3dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="3dp"
-            android:layout_weight="1"
-            android:background="#FFFFFFFF"/>
+            android:alpha="0.7"
+            android:background="#FFFFFFFF"
+            android:layout_weight="1.13" />
 
 
     <LinearLayout
