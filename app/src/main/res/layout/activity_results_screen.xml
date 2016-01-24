@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/vector_canvas"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Results"
+        android:text="@string/results"
         android:id="@+id/resultTextView"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:textSize="40sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
 
     <RatingBar
         android:layout_width="wrap_content"
@@ -17,13 +23,22 @@
         android:id="@+id/ratingBar"
         android:layout_gravity="center_horizontal"
         android:rating="5"
-        android:isIndicator="true" />
+        android:isIndicator="true"
+        android:layout_marginTop="126dp"
+        android:layout_below="@+id/resultTextView"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play Again"
-        android:id="@+id/playAgainButton"
-        android:layout_gravity="center_horizontal" />
+        android:background="@drawable/paint_button"
+        android:text="   Doodle Again!   "
+        android:id="@+id/doodleAgainButton"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="98dp"
+        android:textSize="25sp"
+        android:layout_below="@+id/ratingBar"
+        android:layout_alignLeft="@+id/ratingBar"
+        android:layout_alignStart="@+id/ratingBar" />
 
-</LinearLayout>
+</RelativeLayout>

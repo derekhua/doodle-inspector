@@ -1,20 +1,48 @@
 package com.example.aleksey.doodle_inspector;
 
-import android.os.Handler;
+import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.content.Intent;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class MainScreen extends AppCompatActivity {
+public class MainScreen extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+
+        Typeface dumb_typeface = Typeface.createFromAsset(getAssets(), "fonts/3Dumb.ttf");
+        TextView myTextView = (TextView)findViewById(R.id.title);
+        Button txt = (Button) findViewById(R.id.start_button);
+        txt.setTypeface(dumb_typeface);
+        myTextView.setTypeface(dumb_typeface);
+
+        TextView title = (TextView) findViewById(R.id.title);
+        ImageView image = (ImageView) findViewById(R.id.logo);
+        Animation slideLogo = AnimationUtils.loadAnimation(this, R.anim.slide);
+        Animation slideTitle = AnimationUtils.loadAnimation(this, R.anim.slide);
+        slideLogo.setStartOffset(600);
+        image.startAnimation(slideLogo);
+        title.startAnimation(slideTitle);
+
+        final Animation wobble = AnimationUtils.loadAnimation(this, R.anim.wobble);
+        final ImageView img = (ImageView) findViewById(R.id.logo);
+        img.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                img.startAnimation(wobble);
+                // your code here
+            }
+        });
 
         final Button button = (Button) findViewById(R.id.start_button);
         button.setOnClickListener(new View.OnClickListener() {
