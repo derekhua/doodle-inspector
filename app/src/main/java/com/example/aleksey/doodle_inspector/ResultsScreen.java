@@ -1,17 +1,26 @@
 package com.example.aleksey.doodle_inspector;
 
+import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
-public class ResultsScreen extends AppCompatActivity{
+public class ResultsScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results_screen);
 
+        Typeface slab_typeface = Typeface.createFromAsset(getAssets(), "fonts/SlabThing.ttf");
+        TextView myTextView = (TextView)findViewById(R.id.resultTextView);
+        Button txt = (Button) findViewById(R.id.doodleAgainButton);
+        txt.setTypeface(slab_typeface);
+        myTextView.setTypeface(slab_typeface);
         RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         ratingBar.setRating((float)3.5);
     }
